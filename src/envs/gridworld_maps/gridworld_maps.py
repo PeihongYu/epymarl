@@ -1,0 +1,161 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+
+# inside text file, 0 is empty, 1 is lava, 2 is wall
+
+map_param_registry = {
+    "centerSquare6x6_1a_0": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[0, 0]],
+        "goals": [[9, 9]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_1a_1": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[0, 9]],
+        "goals": [[9, 0]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_1a_2": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[9, 9]],
+        "goals": [[0, 0]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_1a_3": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[9, 0]],
+        "goals": [[0, 9]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_2a": {
+        "n_agents": 2,
+        "limit": 100,
+        "starts": [[0, 0], [9, 9]],
+        "goals": [[9, 9], [0, 0]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_3a": {
+        "n_agents": 3,
+        "limit": 100,
+        "starts": [[0, 0], [0, 9], [9, 9]],
+        "goals": [[9, 9], [9, 0], [0, 0]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "centerSquare6x6_4a": {
+        "n_agents": 4,
+        "limit": 100,
+        "starts": [[0, 0], [0, 9], [9, 9], [9, 0]],
+        "goals": [[9, 9], [9, 0], [0, 0], [0, 9]],
+        "map_file": "centerSquare6x6.txt",
+        "map_type": "goal_reaching",
+    },
+    "appleDoor_a_1": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[2, 0]],
+        "goals": [[2, 6]],
+        "map_file": "appleDoor_a.txt",
+        "map_type": "goal_reaching",
+    },
+    "appleDoor_a_2": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[2, 5]],
+        "goals": [[2, 9]],
+        "map_file": "appleDoor_a.txt",
+        "map_type": "goal_reaching",
+    },
+    "appleDoor_a": {
+        "n_agents": 2,
+        "limit": 100,
+        "starts": [[2, 0], [2, 5]],
+        "goals": [[2, 6], [2, 9]],
+        "door": [2, 3],
+        "map_file": "appleDoor_a.txt",
+        "map_type": "apple_door",
+    },
+    "appleDoor_b_1": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[2, 0]],
+        "goals": [[2, 9]],
+        "door": [2, 3],
+        "map_file": "appleDoor_b.txt",
+        "map_type": "goal_reaching",
+    },
+    "appleDoor_b_2": {
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[2, 5]],
+        "goals": [[0, 7]],
+        "door": [2, 3],
+        "map_file": "appleDoor_b.txt",
+        "map_type": "goal_reaching",
+    },
+    "appleDoor_b": {
+        "n_agents": 2,
+        "limit": 100,
+        "starts": [[2, 0], [2, 5]],
+        "goals": [[2, 9], [0, 7]],
+        "door": [2, 3],
+        "map_file": "appleDoor_b.txt",
+        "map_type": "apple_door",
+    },
+    "pacman_1a_1":{
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[6, 15]], 
+        "dots": [[0, 5, 11, 20]], 
+        "map_file": "pacman.txt",
+        "map_type": "pacman",
+    },
+    "pacman_1a_2":{
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[8, 15]], 
+        "dots": [[14, 19, 11, 20]], 
+        "map_file": "pacman.txt",
+        "map_type": "pacman",
+    },
+    "pacman_1a_3":{
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[7, 14]], 
+        "dots": [[5, 10, 0, 9]], 
+        "map_file": "pacman.txt",
+        "map_type": "pacman",
+    },
+    "pacman_1a_4":{
+        "n_agents": 1,
+        "limit": 100,
+        "starts": [[7, 16]], 
+        "dots": [[5, 10, 22, 31]], 
+        "map_file": "pacman.txt",
+        "map_type": "pacman",
+    },
+    "pacman_4a":{
+        "n_agents": 4,
+        "limit": 100,
+        "starts": [[6, 15], [8, 15], [7, 14], [7, 16]] , 
+        "dots": [[0, 5, 11, 20], [14, 19, 11, 20], [5, 10, 0, 9], [5, 10, 22, 31]], 
+        "map_file": "pacman.txt",
+        "map_type": "pacman",
+    },
+}
+
+
+def get_gridworld_map_registry():
+    return map_param_registry
