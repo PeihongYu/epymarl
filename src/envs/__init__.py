@@ -1,6 +1,10 @@
 from functools import partial
 import pretrained
-from smac.env import MultiAgentEnv, StarCraft2Env
+# from smac.env import MultiAgentEnv, StarCraft2Env
+# from smac.env import StarCraft2Env
+from envs.starcraft2 import StarCraft2Env
+from envs.multiagentenv import MultiAgentEnv
+from envs.gridworld import GridWorldEnv
 import sys
 import os
 import gym
@@ -16,11 +20,14 @@ def env_fn(env, **kwargs) -> MultiAgentEnv:
 
 REGISTRY = {}
 REGISTRY["sc2"] = partial(env_fn, env=StarCraft2Env)
+REGISTRY["gridworld"] = partial(env_fn, env=GridWorldEnv)
 
 if sys.platform == "linux":
-    os.environ.setdefault(
-        "SC2PATH", os.path.join(os.getcwd(), "3rdparty", "StarCraftII")
-    )
+    os.environ.setdefault("SC2PATH",
+                          "/fs/nexus-scratch/peihong/3rdparty/StarCraftII")
+    # os.environ.setdefault(
+    #     "SC2PATH", os.path.join(os.getcwd(), "3rdparty", "StarCraftII")
+    # )
 
 
 class TimeLimit(GymTimeLimit):

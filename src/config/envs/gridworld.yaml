@@ -1,0 +1,21 @@
+env: gridworld
+
+env_args:
+  map_name: "centerSquare6x6_2a"
+  map_path: "/nfshomes/peihong/Documents/epymarl/src/envs/gridworld_maps/maps"
+  use_vec_obs: False
+  use_vec_state: False
+  sight_range: 2
+  seed: null
+  random_transition_order: False
+  render: False
+
+test_greedy: True
+test_nepisode: 32
+test_interval: 10000
+log_interval: 10000
+runner_log_interval: 10000
+learner_log_interval: 10000
+t_max: 5050000 #2050000
+
+critic_hidden_layer_num: 1

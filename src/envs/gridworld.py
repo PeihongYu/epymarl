@@ -2,13 +2,15 @@ import torch as th
 import numpy as np
 import json
 from enum import IntEnum
+
+from envs.multiagentenv import MultiAgentEnv
 import envs.utils.utils as utils
 from envs.gridworld_maps import get_map_params
 
 
 # inside map array, 0 is empty, 1 is lava, 2 is wall, 3 is door, 4 is dots
 
-class GridWorldEnv:
+class GridWorldEnv(MultiAgentEnv):
 
     class Actions(IntEnum):
         left = 0
@@ -118,7 +120,7 @@ class GridWorldEnv:
 
     def get_obs(self):
         if self.use_vec_obs:
-            return self.agents.flatten().copy()
+            return [self.agents.flatten().copy() for i in range(self.n_agents)]
         else:
             obs = []
             sr = self.sight_range
@@ -145,6 +147,15 @@ class GridWorldEnv:
     def get_total_actions(self):
         # up, down, left, right, stay
         return 5
+    
+    def get_avail_actions(self):
+        """Returns the available actions of all agents in a list."""
+        avail_actions = []
+        for aid in range(self.n_agents):
+            cur_avail_action_set = self._available_actions(self.agents[aid])
+            cur_avail_actions = [1 if i in cur_avail_action_set else 0 for i in range(5)]
+            avail_actions.append(cur_avail_actions)
+        return avail_actions
 
     ###################### pacman specific ######################
     def generate_dots(self):
@@ -190,7 +201,6 @@ class GridWorldEnv:
     def _occupied_by_lava(self, i, j):
         if self.map[i, j] == GridWorldEnv.MapBlock.lava:
             return True
-            print("step in lava")
         return False
 
     def check_in_lava(self, i, j):
@@ -264,7 +274,6 @@ class GridWorldEnv:
                     self.eat_dots(i, j)
                 if self.map_type == "goal_reaching":
                     self.check_in_lava(i, j)
-                    print(self.step_in_lava)
 
     def step(self, actions):
         # tbd: check actions type
@@ -279,9 +288,9 @@ class GridWorldEnv:
         reward = self.calculate_reward()
         done = self.done
 
-        info = {"collide": False, "step_in_lava": False}
+        info = {"collision": False, "step_in_lava": False}
         if self.collide:
-            info["collide"] = True
+            info["collision"] = True
             self.collide = False
         if self.step_in_lava:
             info["step_in_lava"] = True
