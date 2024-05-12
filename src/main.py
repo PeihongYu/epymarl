@@ -21,8 +21,8 @@ ex = Experiment("pymarl")
 ex.logger = logger
 ex.captured_out_filter = apply_backspaces_and_linefeeds
 
-results_path = os.path.join(dirname(dirname(abspath(__file__))), "results")
-# results_path = "/home/ubuntu/data"
+# results_path = os.path.join(dirname(dirname(abspath(__file__))), "results")
+results_path = "/fs/nexus-scratch/peihong/contrastive_results_2410"
 
 @ex.main
 def my_main(_run, _config, _log):
@@ -98,15 +98,19 @@ if __name__ == '__main__':
     # now add all the config to sacred
     ex.add_config(config_dict)
 
+    results_path = config_dict["local_results_path"]
+
     for param in params:
         if param.startswith("env_args.map_name"):
             map_name = param.split("=")[1]
         elif param.startswith("env_args.key"):
             map_name = param.split("=")[1]
+        if param.startswith("local_results_path"):
+            results_path = param.split("=")[1]
 
     # Save to disk by default for sacred
     logger.info("Saving to FileStorageObserver in results/sacred.")
-    file_obs_path = os.path.join(results_path, f"sacred/{config_dict['name']}/{map_name}")
+    file_obs_path = os.path.join(results_path, f"sacred/{map_name}/{config_dict['name']}")
 
     # ex.observers.append(MongoObserver(db_name="marlbench")) #url='172.31.5.187:27017'))
     ex.observers.append(FileStorageObserver.create(file_obs_path))

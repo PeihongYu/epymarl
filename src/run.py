@@ -8,6 +8,7 @@ from types import SimpleNamespace as SN
 from utils.logging import Logger
 from utils.timehelper import time_left, time_str
 from os.path import dirname, abspath
+import json
 
 from learners import REGISTRY as le_REGISTRY
 from runners import REGISTRY as r_REGISTRY
@@ -38,15 +39,20 @@ def run(_run, _config, _log):
         map_name = _config["env_args"]["map_name"]
     except:
         map_name = _config["env_args"]["key"]
-    unique_token = f"{_config['name']}_seed{_config['seed']}_{map_name}_{datetime.datetime.now()}"
+    unique_token = f"{_config['name']}_{map_name}_seed{_config['seed']}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
 
     args.unique_token = unique_token
     if args.use_tensorboard:
         tb_logs_direc = os.path.join(
-            dirname(dirname(abspath(__file__))), "results", "tb_logs"
+            args.local_results_path, "tb_logs", args.env, map_name
         )
         tb_exp_direc = os.path.join(tb_logs_direc, "{}").format(unique_token)
         logger.setup_tb(tb_exp_direc)
+
+        # write config file
+        config_str = json.dumps(vars(args), indent=4, sort_keys=True)
+        with open(os.path.join(tb_exp_direc, "config.json"), "w") as f:
+            f.write(config_str)
 
     # sacred is on by default
     logger.setup_sacred(_run)
@@ -221,8 +227,12 @@ def run_sequential(args, logger):
             or model_save_time == 0
         ):
             model_save_time = runner.t_env
+            try:
+                map_name = args.env_args["map_name"]
+            except:
+                map_name = args.env_args["key"]
             save_path = os.path.join(
-                args.local_results_path, "models", args.unique_token, str(runner.t_env)
+                args.local_results_path, "models", args.env, map_name, args.unique_token, str(runner.t_env)
             )
             # "results/models/{}".format(unique_token)
             os.makedirs(save_path, exist_ok=True)
