@@ -72,6 +72,7 @@ class StarCraft2Env(MultiAgentEnv):
         game_version=None,
         seed=None,
         continuing_episode=False,
+        sight_range=9,
         obs_all_health=True,
         obs_own_health=True,
         obs_last_action=False,
@@ -204,6 +205,7 @@ class StarCraft2Env(MultiAgentEnv):
         self.difficulty = difficulty
 
         # Observations and state
+        self.sight_range = sight_range
         self.obs_own_health = obs_own_health
         self.obs_all_health = obs_all_health
         self.obs_instead_of_state = obs_instead_of_state
@@ -843,7 +845,7 @@ class StarCraft2Env(MultiAgentEnv):
 
     def unit_sight_range(self, agent_id):
         """Returns the sight range for an agent."""
-        return 9
+        return self.sight_range
 
     def unit_max_cooldown(self, unit):
         """Returns the maximal cooldown for a unit."""
@@ -1385,7 +1387,43 @@ class StarCraft2Env(MultiAgentEnv):
     def get_unit_type_id(self, unit, ally):
         """Returns the ID of unit type in the given scenario."""
         if ally:  # use new SC2 unit types
-            type_id = unit.unit_type - self._min_unit_type
+            if self.map_type == "MM_queen":
+                if unit.unit_type == 1971:
+                    # marine
+                    type_id = 0
+                elif unit.unit_type == 1970:
+                    # marauder
+                    type_id = 1
+            elif self.map_type == "overload_zergling":
+                if unit.unit_type == 1971:
+                    # zerglings
+                    type_id = 0
+                else:
+                    # overload
+                    type_id = 1
+            elif self.map_type == "overload_roach":
+                if unit.unit_type == 1972:
+                    # roach
+                    type_id = 0
+                elif unit.unit_type == 1971:
+                    # overload
+                    type_id = 1
+            elif self.map_type == "overload_bane":
+                if unit.unit_type == 1971:
+                    # overload
+                    type_id = 0
+                else:
+                    # baneling
+                    type_id = 1
+            elif self.map_type == "zMz":
+                if unit.unit_type == 1970:
+                    # zealot
+                    type_id = 0
+                else:
+                    # medivacs
+                    type_id = 1
+            else:
+                type_id = unit.unit_type - self._min_unit_type
         else:  # use default SC2 unit types
             if self.map_type == "stalkers_and_zealots":
                 # id(Stalker) = 74, id(Zealot) = 73
@@ -1418,6 +1456,33 @@ class StarCraft2Env(MultiAgentEnv):
                     type_id = 1
                 else:
                     type_id = 2
+            elif self.map_type == "zerg_queen":
+                if unit.unit_type == 105:
+                    type_id = 0
+                elif unit.unit_type == 126:
+                    type_id = 1
+            elif self.map_type == "MM_queen":
+                # queen
+                type_id = 0
+            elif self.map_type == "overload_zergling":
+                # zergling
+                type_id = 0
+            elif self.map_type == "overload_roach":
+                # roach
+                type_id = 0
+            elif self.map_type == "overload_bane":
+                # baneling
+                type_id = 0
+            elif self.map_type == "bZ_hM":
+                if unit.unit_type == 107:
+                    # hydralisk
+                    type_id = 0
+                else:
+                    # medivacs
+                    type_id = 1
+            elif self.map_type == "zMz":
+                # zergling
+                type_id = 0
 
         return type_id
 

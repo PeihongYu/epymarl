@@ -14,6 +14,15 @@ class SMACMap(lib.Map):
 
 
 map_param_registry = {
+    "1o_10b_vs_1r": {
+        "n_agents": 11,
+        "n_enemies": 1,
+        "limit": 50,
+        "a_race": "Z",
+        "b_race": "Z",
+        "unit_type_bits": 2,
+        "map_type": "overload_bane"
+    },
     "3m": {
         "n_agents": 3,
         "n_enemies": 3,
